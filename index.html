@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Library REST API Documentation</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, sans-serif;
+}
+
+body{
+background:#f4f6fb;
+color:#333;
+}
+
+/* HEADER */
+
+header{
+background:linear-gradient(120deg,#4facfe,#00f2fe);
+color:white;
+padding:40px;
+text-align:center;
+}
+
+header h1{
+font-size:38px;
+margin-bottom:10px;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+}
+
+/* SECTION */
+
+.section{
+margin-bottom:40px;
+}
+
+.section h2{
+margin-bottom:15px;
+color:#444;
+border-left:5px solid #4facfe;
+padding-left:10px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+margin-bottom:20px;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+/* ENDPOINT BADGES */
+
+.method{
+display:inline-block;
+padding:6px 12px;
+border-radius:5px;
+color:white;
+font-weight:bold;
+margin-right:10px;
+}
+
+.get{background:#27ae60;}
+.post{background:#3498db;}
+.put{background:#f39c12;}
+.delete{background:#e74c3c;}
+
+.endpoint{
+font-family:monospace;
+background:#f2f2f2;
+padding:6px 10px;
+border-radius:4px;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+table th, table td{
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+
+table th{
+background:#4facfe;
+color:white;
+}
+
+/* CODE BLOCK */
+
+.code{
+background:#1e1e1e;
+color:#00ffcc;
+padding:15px;
+border-radius:8px;
+font-family:monospace;
+overflow-x:auto;
+margin-top:10px;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:20px;
+background:#222;
+color:white;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Library Inventory REST API</h1>
+<p>CRUD Operations Documentation</p>
+</header>
+
+<div class="container">
+
+<!-- OVERVIEW -->
+
+<div class="section">
+
+<h2>API Overview</h2>
+
+<div class="card">
+<p>This RESTful API manages a library inventory system.  
+It allows developers to perform CRUD operations on books including creating, retrieving, updating, and deleting records.</p>
+
+<p><b>Base URL:</b> <span class="endpoint">https://api.librarysystem.com</span></p>
+
+</div>
+
+</div>
+
+<!-- DATA MODEL -->
+
+<div class="section">
+
+<h2>Book Data Model</h2>
+
+<div class="card">
+
+<table>
+
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>id</td>
+<td>Integer</td>
+<td>Unique identifier for the book</td>
+</tr>
+
+<tr>
+<td>title</td>
+<td>String</td>
+<td>Title of the book</td>
+</tr>
+
+<tr>
+<td>author</td>
+<td>String</td>
+<td>Book author</td>
+</tr>
+
+<tr>
+<td>year</td>
+<td>Integer</td>
+<td>Publication year</td>
+</tr>
+
+<tr>
+<td>available</td>
+<td>Boolean</td>
+<td>Availability status</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- ENDPOINTS -->
+
+<div class="section">
+
+<h2>API Endpoints</h2>
+
+<!-- GET -->
+
+<div class="card">
+
+<span class="method get">GET</span>
+<span class="endpoint">/books</span>
+
+<p>Retrieve all books from the library inventory.</p>
+
+<div class="code">
+Response Example:
+
+[
+{
+"id":1,
+"title":"Clean Code",
+"author":"Robert C. Martin",
+"year":2008,
+"available":true
+}
+]
+</div>
+
+</div>
+
+<!-- POST -->
+
+<div class="card">
+
+<span class="method post">POST</span>
+<span class="endpoint">/books</span>
+
+<p>Add a new book to the inventory.</p>
+
+<div class="code">
+Request Body:
+
+{
+"title":"Atomic Habits",
+"author":"James Clear",
+"year":2018,
+"available":true
+}
+</div>
+
+</div>
+
+<!-- PUT -->
+
+<div class="card">
+
+<span class="method put">PUT</span>
+<span class="endpoint">/books/{id}</span>
+
+<p>Update an existing book record.</p>
+
+<div class="code">
+PUT /books/1
+
+{
+"title":"Clean Code (Updated)",
+"available":false
+}
+</div>
+
+</div>
+
+<!-- DELETE -->
+
+<div class="card">
+
+<span class="method delete">DELETE</span>
+<span class="endpoint">/books/{id}</span>
+
+<p>Remove a book from the inventory.</p>
+
+<div class="code">
+DELETE /books/1
+</div>
+
+</div>
+
+</div>
+
+<!-- SAMPLE SERVER CODE -->
+
+<div class="section">
+
+<h2>Sample Node.js Implementation</h2>
+
+<div class="card">
+
+<div class="code">
+
+const express = require('express');  
+const app = express();  
+
+app.use(express.json());
+
+let books = [];
+
+app.get('/books',(req,res)=>{  
+res.json(books);  
+});
+
+app.post('/books',(req,res)=>{  
+books.push(req.body);  
+res.json({message:"Book added"});  
+});
+
+app.put('/books/:id',(req,res)=>{  
+books[req.params.id] = req.body;  
+res.json({message:"Book updated"});  
+});
+
+app.delete('/books/:id',(req,res)=>{  
+books.splice(req.params.id,1);  
+res.json({message:"Book deleted"});  
+});
+
+app.listen(3000);
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+Library REST API Documentation • Developer Guide
+</footer>
+
+</body>
+</html>
